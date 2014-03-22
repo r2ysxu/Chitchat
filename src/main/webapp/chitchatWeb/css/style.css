@@ -1,0 +1,54 @@
+#drawDiv {
+	float: left;
+	border: solid 1px;
+}
+
+#chatBox {
+	margin-left: 5px;
+	float: left;
+	border: solid 1px;
+	position: absolute;
+	left: 650px;
+}
+
+#chatTextField {
+	border-radius: 5px;
+}
+
+#chatHist {
+	width: 250px;
+	height: 480px;
+	overflow: auto;
+}
+
+#overlayText {
+	position: absolute;
+	top: 15px;
+	left: 0px;
+	width: 640px;
+	height: 480px;
+}
+
+.chatBubble {
+	margin-left: auto;
+	margin-right: auto;
+	width: 70%;
+	background: white;
+	border: solid 1px;
+	border-radius: 5px;
+	opacity: .80; /* Standard: FF gt 1.5, Opera, Safari, CSS3 */
+	filter: alpha(opacity = 80); /* IE lt 8 */
+	-ms-filter: "alpha(opacity=80)"; /* IE 8 */
+	-khtml-opacity: .80; /* Safari 1.x */
+	-moz-opacity: .80; /* FF lt 1.5, Netscape */
+}
+
+.chatBubbleUsr {
+	float: left;
+	margin-right: 5px;
+	font-weight: bold;
+}
+
+.chatBubbleTxt {
+	float: right;
+}
