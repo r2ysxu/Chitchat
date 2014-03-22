@@ -107,11 +107,10 @@ function Player(name) {
 			return textures[1];
 	}
 
-	var hVel = 0.0;
+	this.hVel = 0.0;
 
 	this.moveLeft = moveLeft;
 	function moveLeft() {
-		starTimer = (new Date).getTime();
 		this.walking = true;
 		this.leftright = true;
 		hVel = -0.02;
@@ -119,29 +118,20 @@ function Player(name) {
 
 	this.moveRight = moveRight;
 	function moveRight() {
-		starTimer = (new Date).getTime();
 		this.walking = true;
 		this.leftright = false;
 		hVel = 0.02;
 	}
 
-	var moveTime = 0;
-	var starTimer;
-	var endTimer;
-
 	this.stopMoving = stopMoving;
-	function stopMoving(eta) {
+	function stopMoving() {
 		this.walking = false;
-		moveTime = eta;
+		hVel = 0.0;
 	}
 
 	this.move = move;
 	function move() {
-		endTimer = (new Date).getTime();
-		if ((endTimer - starTimer) < moveTime)
-			this.xPos += hVel;
-		else
-			hVel = 0.0;
+		this.xPos += hVel;
 	}
 
 	this.stopJumping = stopJumping;

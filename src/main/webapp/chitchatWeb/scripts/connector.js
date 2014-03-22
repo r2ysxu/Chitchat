@@ -87,7 +87,7 @@ function chatResponse(response) {
 }
 
 function stopResponse(response) {
-	players[response.index].stopMoving(response.eta);
+	players[response.index].stopMoving();
 }
 
 function moveResponse(response) {
