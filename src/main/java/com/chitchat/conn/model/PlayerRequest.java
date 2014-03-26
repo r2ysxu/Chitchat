@@ -41,6 +41,14 @@ public class PlayerRequest {
 		this.yPos = yPos;
 	}
 
+	public void addxPos(double offset) {
+		this.xPos += offset;
+	}
+
+	public void addyPos(double offset) {
+		this.yPos += offset;
+	}
+
 	public int getIndex() {
 		return index;
 	}
@@ -84,16 +92,24 @@ public class PlayerRequest {
 		return str;
 	}
 
-	public String jsonMoveResponse(String pos) {
+	public String jsonMoveResponse() {
 		String str = "{" + "\"type\" : \"move\"" + ", \"index\" : \"" + index
-				+ "\", \"pos\" : \"" + pos + "\"" + "}";
+				+ "\", \"pos\" : \"" + "move" + "\", \"xPos\" : \"" + xPos
+				+ "\"" + ", \"yPos\" : \"" + yPos + "\"" + "}";
 		// System.out.println("Move Rsp:" + str);
 		return str;
 	}
 
-	public String jsonStopResponse(long eta) {
+	public String jsonJumpResponse() {
+		String str = "{" + "\"type\" : \"move\"" + ", \"index\" : \"" + index
+				+ "\", \"pos\" : \"" + "jump" + "\"" + "}";
+		// System.out.println("Move Rsp:" + str);
+		return str;
+	}
+
+	public String jsonStopResponse() {
 		String str = "{" + "\"type\" : \"stop\"" + ", \"index\" : \"" + index
-				+ "\", \"eta\" : \"" + eta + "\"" + "}";
+				+ "\"" + "}";
 		System.out.println("Stop Rsp:" + str);
 		return str;
 	}

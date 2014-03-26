@@ -107,38 +107,6 @@ function Player(name) {
 			return textures[1];
 	}
 
-	this.hVel = 0.0;
-
-	this.moveLeft = moveLeft;
-	function moveLeft() {
-		this.walking = true;
-		this.leftright = true;
-		hVel = -0.02;
-	}
-
-	this.moveRight = moveRight;
-	function moveRight() {
-		this.walking = true;
-		this.leftright = false;
-		hVel = 0.02;
-	}
-
-	this.stopMoving = stopMoving;
-	function stopMoving() {
-		this.walking = false;
-		hVel = 0.0;
-	}
-
-	this.move = move;
-	function move() {
-		this.xPos += hVel;
-	}
-
-	this.stopJumping = stopJumping;
-	function stopJumping() {
-
-	}
-
 	this.jumpUp = jumpUp;
 	function jumpUp() {
 		if (this.landed && !this.jumping) {

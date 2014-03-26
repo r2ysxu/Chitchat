@@ -91,10 +91,8 @@ function stopResponse(response) {
 }
 
 function moveResponse(response) {
-	if (response.pos == 'left') {
-		players[response.index].moveLeft();
-	} else if (response.pos == 'right') {
-		players[response.index].moveRight();
+	if (response.pos == 'move') {
+		players[response.index].xPos = response.xPos;
 	} else if (response.pos == 'jump') {
 		players[response.index].jumpUp();
 	}
@@ -136,15 +134,11 @@ var jumping = false;
 var airDelay = 0;
 var maxAirDelay = 15;
 
-var startTime;
 function handleWalkKeys(pos) {
 	if (players[playerIndex].walking) {
-		var endTime = (new Date).getTime();
-		var delta = endTime - startTime;
-		var request = '{ "type" : "stop", "pos" : "' + pos + '", "eta" : "'
-				+ delta + '" }';
+		var request = '{ "type" : "stop", "pos" : "' + pos + '" }';
+		players[playerIndex].walking = false;
 		websocket.send(request);
-		startTime = endTime;
 	}
 }
 
@@ -155,23 +149,21 @@ function handleKeyDownEvents() {
 	}
 	if (currentlyPressedKeys[37]) { // Left cursor key
 		if (!players[playerIndex].walking) {
-			var request = '{ "type" : "move", "pos" : "left" }';
+			var request = '{ "type" : "move", "pos" : "1" }';
 			websocket.send(request);
 			players[playerIndex].walking = true;
-			startTime = (new Date).getTime();
 		}
 	}
 	if (currentlyPressedKeys[39]) { // Right cursor key
 		if (!players[playerIndex].walking) {
-			var request = '{ "type" : "move", "pos" : "right" }';
+			var request = '{ "type" : "move", "pos" : "2" }';
 			websocket.send(request);
 			players[playerIndex].walking = true;
-			startTime = (new Date).getTime();
 		}
 	}
 	if (currentlyPressedKeys[38]) { // Up cursor key
 		if (!jumping) {
-			var request = '{ "type" : "move", "pos" : "jump" }';
+			var request = '{ "type" : "move", "pos" : "0" }';
 			websocket.send(request);
 			jumping = true;
 		}

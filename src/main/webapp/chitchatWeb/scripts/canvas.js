@@ -258,7 +258,6 @@ function handleCollision() {
 		if (cplayer.jumping) {
 			cplayer.jumpUp();
 		}
-		cplayer.move();
 	}
 
 	if (airDelay > maxAirDelay) {
