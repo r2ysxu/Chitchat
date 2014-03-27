@@ -91,8 +91,12 @@ function stopResponse(response) {
 }
 
 function moveResponse(response) {
-	if (response.pos == 'move') {
+	if (response.pos == 'left') {
 		players[response.index].xPos = response.xPos;
+		players[response.index].leftright = true;
+	} else if (response.pos == 'right') {
+		players[response.index].xPos = response.xPos;
+		players[response.index].leftright = false;
 	} else if (response.pos == 'jump') {
 		players[response.index].jumpUp();
 	}
