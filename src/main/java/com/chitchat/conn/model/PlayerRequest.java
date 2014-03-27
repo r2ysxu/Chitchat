@@ -92,9 +92,9 @@ public class PlayerRequest {
 		return str;
 	}
 
-	public String jsonMoveResponse() {
+	public String jsonMoveResponse(String pos) {
 		String str = "{" + "\"type\" : \"move\"" + ", \"index\" : \"" + index
-				+ "\", \"pos\" : \"" + "move" + "\", \"xPos\" : \"" + xPos
+				+ "\", \"pos\" : \"" + pos + "\", \"xPos\" : \"" + xPos
 				+ "\"" + ", \"yPos\" : \"" + yPos + "\"" + "}";
 		// System.out.println("Move Rsp:" + str);
 		return str;
