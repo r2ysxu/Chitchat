@@ -63,11 +63,14 @@ public class MoveRequests extends Thread {
 			Session clientSession = clientValue.getSession();
 			try {
 				double offset = 0.01;
-				if (leftright)
+				String pos = "right";
+				if (leftright) {
 					offset *= -1;
+					pos = "left";
+				}
 				sender.addxPos(offset);
 				clientSession.getBasicRemote().sendObject(
-						sender.jsonMoveResponse());
+						sender.jsonMoveResponse(pos));
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (EncodeException e) {
@@ -82,7 +85,7 @@ public class MoveRequests extends Thread {
 			Session clientSession = clientValue.getSession();
 			try {
 				clientSession.getBasicRemote().sendObject(
-						sender.jsonMoveResponse());
+						sender.jsonMoveResponse("jump"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (EncodeException e) {
