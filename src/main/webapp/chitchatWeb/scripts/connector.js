@@ -1,4 +1,4 @@
-var URL = "ws://localhost:8080/Chitchat/echo";
+var URL = "ws://25.6.13.201:8080/Chitchat/echo";
 var websocket;
 var playerIndex = -1;
 
@@ -91,8 +91,12 @@ function stopResponse(response) {
 }
 
 function moveResponse(response) {
-	if (response.pos == 'move') {
+	if (response.pos == '1') {
 		players[response.index].xPos = response.xPos;
+		players[response.index].leftright = true;
+	} else if (response.pos == '2') {
+		players[response.index].xPos = response.xPos;
+		players[response.index].leftright = false;
 	} else if (response.pos == 'jump') {
 		players[response.index].jumpUp();
 	}

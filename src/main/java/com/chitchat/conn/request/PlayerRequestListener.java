@@ -18,6 +18,13 @@ public class PlayerRequestListener {
 	private final Map<String, PlayerRequest> clients = new HashMap<String, PlayerRequest>();
 	private final Map<String, MoveRequests> moveRequests = new HashMap<String, MoveRequests>();
 
+	private RequestQueue queue;
+
+	public PlayerRequestListener() {
+		queue = new RequestQueue(clients);
+		queue.start();
+	}
+
 	public void addPlayerRequest(Session session, String name) {
 		clients.put(session.toString(),
 				new PlayerRequest(session, clients.size()));
@@ -77,10 +84,10 @@ public class PlayerRequestListener {
 	}
 
 	public void sendMovementResponse(Session senderSession, int pos) {
-		System.out.println("Move Request: " + pos);
+		//System.out.println("Move Request: " + pos);
 		PlayerRequest sender = clients.get(senderSession.toString());
 		if (pos > 0) {
-			MoveRequests mr = new MoveRequests(clients, sender, pos);
+			MoveRequests mr = new MoveRequests(queue, sender, pos);
 			moveRequests.put(senderSession.toString(), mr);
 			mr.start();
 		} else {
@@ -89,22 +96,11 @@ public class PlayerRequestListener {
 	}
 
 	private void sendJumpResponse(PlayerRequest sender) {
-		for (Entry<String, PlayerRequest> client : clients.entrySet()) {
-			PlayerRequest clientValue = client.getValue();
-			Session clientSession = clientValue.getSession();
-			try {
-				clientSession.getBasicRemote().sendObject(
-						sender.jsonJumpResponse());
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (EncodeException e) {
-				e.printStackTrace();
-			}
-		}
+		queue.enqueue(sender.jsonJumpResponse());
 	}
 
 	public void sendStopResponse(Session senderSession) {
-		System.out.println("Stop Request: ");
+		//System.out.println("Stop Request: ");
 		PlayerRequest sender = clients.get(senderSession.toString());
 		MoveRequests moveRq = moveRequests.get(senderSession.toString());
 		moveRq.stopMoving();
@@ -114,17 +110,6 @@ public class PlayerRequestListener {
 
 	public void sendTextResponse(Session senderSession, String message) {
 		PlayerRequest sender = clients.get(senderSession.toString());
-		for (Entry<String, PlayerRequest> client : clients.entrySet()) {
-			PlayerRequest clientValue = client.getValue();
-			Session clientSession = clientValue.getSession();
-			try {
-				clientSession.getBasicRemote().sendObject(
-						sender.jsonChatResponse(message));
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (EncodeException e) {
-				e.printStackTrace();
-			}
-		}
+		queue.enqueue(sender.jsonChatResponse(message));
 	}
 }
