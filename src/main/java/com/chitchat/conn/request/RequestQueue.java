@@ -10,7 +10,7 @@ import javax.websocket.Session;
 import com.chitchat.conn.model.PlayerRequest;
 
 public class RequestQueue extends Thread {
-	private ConcurrentLinkedQueue<String> requests = new ConcurrentLinkedQueue<String>();
+	private volatile ConcurrentLinkedQueue<String> requests = new ConcurrentLinkedQueue<String>();
 	private final Map<String, PlayerRequest> clients;
 	private boolean closed = false;
 
