@@ -95,10 +95,12 @@ function moveResponse(response) {
 		players[response.index].xPos = response.xPos;
 		players[response.index].yPos = response.yPos;
 		players[response.index].leftright = true;
+		players[response.index].jumping = response.fall;
 	} else if (response.pos == '2') {
 		players[response.index].xPos = response.xPos;
 		players[response.index].yPos = response.yPos;
 		players[response.index].leftright = false;
+		players[response.index].jumping = response.fall;
 	}
 }
 

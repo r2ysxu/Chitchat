@@ -70,6 +70,7 @@ function Player(name) {
 	this.landed = false;
 	this.walking = false;
 	this.leftright = true;
+	this.jumping = true;
 
 	this.correctTexture = correctTexture;
 	function correctTexture() {

@@ -92,10 +92,11 @@ public class PlayerRequest {
 		return str;
 	}
 
-	public String jsonMoveResponse(int pos) {
+	public String jsonMoveResponse(int pos, boolean falling) {
 		String str = "{" + "\"type\" : \"move\"" + ", \"index\" : \"" + index
-				+ "\", \"pos\" : \"" + pos + "\", \"xPos\" : \"" + xPos + "\""
-				+ ", \"yPos\" : \"" + yPos + "\"" + "}";
+				+ "\", \"pos\" : \"" + pos + "\", \"fall\" : " + falling
+				+ ", \"xPos\" : \"" + xPos + "\"" + ", \"yPos\" : \"" + yPos
+				+ "\"" + "}";
 		// System.out.println("Move Rsp:" + str);
 		return str;
 	}

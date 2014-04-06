@@ -12,11 +12,13 @@ public class MoveRequests extends Thread {
 	private boolean landed;
 	private boolean leftright;
 	private boolean closed;
-	private double vVel = 0.01;
+	private double vVel = 0.001;
+	private double hVel = 0.01;
 	private double startYPos;
 
 	private static final double baseYPlate = -1.82;
 	private static final double maxJumpHeight = 0.6;
+	private static final double maxSceneWidth = 3;
 
 	/*
 	 * public MoveRequests(Map<String, PlayerRequest> clients, PlayerRequest
@@ -49,13 +51,22 @@ public class MoveRequests extends Thread {
 		int pos = 1;
 		if (!leftright)
 			pos = 2;
-		queue.enqueue(sender.jsonMoveResponse(pos));
+		queue.enqueue(sender.jsonMoveResponse(pos, !landed));
+	}
+
+	private void sendLandedResponse() {
+		int pos = 1;
+		if (!leftright)
+			pos = 2;
+		queue.enqueue(sender.jsonMoveResponse(pos, !landed));
 	}
 
 	private void handleMovement() {
-		double offset = 0.01;
-		if (leftright) {
-			offset *= -1;
+		double offset = 0.0;
+		if (leftright && sender.getxPos() > -maxSceneWidth) {
+			offset = -hVel;
+		} else if (sender.getxPos() < maxSceneWidth) {
+			offset = hVel;
 		}
 		sender.addxPos(offset);
 	}
@@ -80,12 +91,12 @@ public class MoveRequests extends Thread {
 	}
 
 	private void handleJumping() {
-		double offset = 0.001;
 		// Fall Detection
 		if (sender.getyPos() < baseYPlate) { // Landed
 			sender.setyPos(baseYPlate);
 			landed = true;
 			jumping = false;
+			sendLandedResponse();
 		} else if (!this.jumping && !this.landed) { // Falling
 			sender.addyPos(-vVel);
 			vVel += 0.001;
