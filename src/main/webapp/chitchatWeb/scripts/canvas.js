@@ -163,7 +163,7 @@ function initBgBuffer() {
 
 function initBuffers() {
 	initBgBuffer();
-	for (var i = 0; i < maxPlayers; i++) {
+	for ( var i = 0; i < maxPlayers; i++) {
 		players[i] = new Player('Player ' + i);
 		players[i].initPlayerBuffer();
 	}
@@ -244,22 +244,13 @@ function drawScene() {
 	perspectiveMatrix = makePerspective(45, 640.0 / 480.0, 0.1, 100.0);
 
 	drawBackground();
-	for (var i = 0; i < maxPlayers; i++) {
+	for ( var i = 0; i < maxPlayers; i++) {
 		if (players[i].online)
 			players[i].drawPlayer();
 	}
 }
 
 function handleCollision() {
-
-	for (var i = 0; i < players.length; i++) {
-		var cplayer = players[i];
-		cplayer.handleJump();
-		if (cplayer.jumping) {
-			cplayer.jumpUp();
-		}
-	}
-
 	if (airDelay > maxAirDelay) {
 		jumping = false;
 		airDelay = 0;

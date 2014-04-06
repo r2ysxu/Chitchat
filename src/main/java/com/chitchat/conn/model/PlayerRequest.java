@@ -94,15 +94,8 @@ public class PlayerRequest {
 
 	public String jsonMoveResponse(int pos) {
 		String str = "{" + "\"type\" : \"move\"" + ", \"index\" : \"" + index
-				+ "\", \"pos\" : \"" + pos + "\", \"xPos\" : \"" + xPos
-				+ "\"" + ", \"yPos\" : \"" + yPos + "\"" + "}";
-		// System.out.println("Move Rsp:" + str);
-		return str;
-	}
-
-	public String jsonJumpResponse() {
-		String str = "{" + "\"type\" : \"move\"" + ", \"index\" : \"" + index
-				+ "\", \"pos\" : \"" + "jump" + "\"" + "}";
+				+ "\", \"pos\" : \"" + pos + "\", \"xPos\" : \"" + xPos + "\""
+				+ ", \"yPos\" : \"" + yPos + "\"" + "}";
 		// System.out.println("Move Rsp:" + str);
 		return str;
 	}
@@ -118,7 +111,7 @@ public class PlayerRequest {
 		String str = "{" + "\"type\" : \"chat\"" + ", \"index\" : \"" + index
 				+ "\"" + ", \"name\" : " + "\"" + name + "\""
 				+ ", \"message\": \"" + message + "\"" + "}";
-		System.out.println("Chat Rsp:" + str);
+		// System.out.println("Chat Rsp:" + str);
 		return str;
 	}
 }

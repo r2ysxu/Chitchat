@@ -93,12 +93,12 @@ function stopResponse(response) {
 function moveResponse(response) {
 	if (response.pos == '1') {
 		players[response.index].xPos = response.xPos;
+		players[response.index].yPos = response.yPos;
 		players[response.index].leftright = true;
 	} else if (response.pos == '2') {
 		players[response.index].xPos = response.xPos;
+		players[response.index].yPos = response.yPos;
 		players[response.index].leftright = false;
-	} else if (response.pos == 'jump') {
-		players[response.index].jumpUp();
 	}
 }
 
@@ -140,7 +140,7 @@ var maxAirDelay = 15;
 
 function handleWalkKeys(pos) {
 	if (players[playerIndex].walking) {
-		var request = '{ "type" : "stop", "pos" : "' + pos + '" }';
+		var request = '{ "type" : "stop" }';
 		players[playerIndex].walking = false;
 		websocket.send(request);
 	}

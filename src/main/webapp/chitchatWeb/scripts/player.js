@@ -68,32 +68,8 @@ function Player(name) {
 	}
 
 	this.landed = false;
-	this.jumping = false;
 	this.walking = false;
 	this.leftright = true;
-	this.jumpTime = 0;
-	this.maxJumpTime = 15;
-	this.vVel = 0.01;
-
-	this.handleJump = handleJump;
-	function handleJump() {
-		// Fall Detection
-		if (this.yPos < -1.82) { // Landed
-			this.yPos = -1.82;
-			this.landed = true;
-			this.jumping = false;
-			this.jumpTime = 0;
-		} else if (!this.jumping && !this.landed) { // Falling
-			this.yPos -= this.vVel;
-			this.vVel += 0.001;
-		} else if (this.jumping && (this.jumpTime < this.maxJumpTime)) { // Jumping
-			this.yPos += this.vVel;
-			this.vVel -= 0.001;
-			this.jumpTime++; // No framerate consideration
-		} else {
-			this.jumping = false;
-		}
-	}
 
 	this.correctTexture = correctTexture;
 	function correctTexture() {
@@ -105,14 +81,5 @@ function Player(name) {
 			return textures[2];
 		else
 			return textures[1];
-	}
-
-	this.jumpUp = jumpUp;
-	function jumpUp() {
-		if (this.landed && !this.jumping) {
-			this.jumping = true;
-			this.landed = false;
-			this.vVel = 0.06;
-		}
 	}
 }

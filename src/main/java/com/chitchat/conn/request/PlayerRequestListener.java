@@ -13,6 +13,12 @@ import javax.websocket.Session;
 
 import com.chitchat.conn.model.PlayerRequest;
 
+/**
+ * This Class Listens to requests
+ * 
+ * @author arthurxu
+ * 
+ */
 public class PlayerRequestListener {
 
 	private final Map<String, PlayerRequest> clients = new HashMap<String, PlayerRequest>();
@@ -67,6 +73,7 @@ public class PlayerRequestListener {
 	}
 
 	public void sendQuitterResponse(Session senderSession) {
+		stopMovement(senderSession);
 		PlayerRequest sender = clients.get(senderSession.toString());
 		for (Entry<String, PlayerRequest> client : clients.entrySet()) {
 			PlayerRequest clientValue = client.getValue();
@@ -83,27 +90,41 @@ public class PlayerRequestListener {
 		moveRequests.remove(senderSession.toString());
 	}
 
-	public void sendMovementResponse(Session senderSession, int pos) {
-		//System.out.println("Move Request: " + pos);
+	public void startMovement(Session senderSession) {
+		// System.out.println("Move Request: " + pos);
 		PlayerRequest sender = clients.get(senderSession.toString());
-		if (pos > 0) {
-			MoveRequests mr = new MoveRequests(queue, sender, pos);
-			moveRequests.put(senderSession.toString(), mr);
-			mr.start();
-		} else {
-			sendJumpResponse(sender);
+		MoveRequests mr = new MoveRequests(queue, sender);
+		moveRequests.put(senderSession.toString(), mr);
+		mr.start();
+	}
+
+	public void sendMovementResponse(Session senderSession, int pos) {
+		// System.out.println("Move Request: " + pos);
+		PlayerRequest sender = clients.get(senderSession.toString());
+		MoveRequests mr = moveRequests.get(senderSession.toString());
+		switch (pos) {
+		case 0:
+			mr.jumpUp();
+			break;
+		case 1:
+			mr.moveLeft();
+			break;
+		case 2:
+			mr.moveRight();
+			break;
 		}
 	}
 
-	private void sendJumpResponse(PlayerRequest sender) {
-		queue.enqueue(sender.jsonJumpResponse());
-	}
-
 	public void sendStopResponse(Session senderSession) {
-		//System.out.println("Stop Request: ");
 		PlayerRequest sender = clients.get(senderSession.toString());
 		MoveRequests moveRq = moveRequests.get(senderSession.toString());
 		moveRq.stopMoving();
+	}
+
+	private void stopMovement(Session senderSession) {
+		// System.out.println("Stop Request: ");
+		PlayerRequest sender = clients.get(senderSession.toString());
+		MoveRequests moveRq = moveRequests.get(senderSession.toString());
 		moveRq.close();
 		moveRequests.remove(senderSession.toString());
 	}

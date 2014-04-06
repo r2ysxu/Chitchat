@@ -1,12 +1,5 @@
 package com.chitchat.conn.request;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.websocket.EncodeException;
-import javax.websocket.Session;
-
 import com.chitchat.conn.model.PlayerRequest;
 
 public class MoveRequests extends Thread {
@@ -14,11 +7,16 @@ public class MoveRequests extends Thread {
 	// private static Map<String, PlayerRequest> clients;
 	private static RequestQueue queue;
 	private PlayerRequest sender;
-	private int pos;
 	private boolean moving;
 	private boolean jumping;
+	private boolean landed;
 	private boolean leftright;
 	private boolean closed;
+	private double vVel = 0.01;
+	private double startYPos;
+
+	private static final double baseYPlate = -1.82;
+	private static final double maxJumpHeight = 0.6;
 
 	/*
 	 * public MoveRequests(Map<String, PlayerRequest> clients, PlayerRequest
@@ -30,39 +28,17 @@ public class MoveRequests extends Thread {
 	 * leftright = false; break; default: moving = false; jumping = false; } }
 	 */
 
-	public MoveRequests(RequestQueue queue, PlayerRequest sender, int pos) {
+	public MoveRequests(RequestQueue queue, PlayerRequest sender) {
 		MoveRequests.queue = queue;
 		this.sender = sender;
 		this.closed = false;
-		this.pos = pos;
-
-		switch (pos) {
-		// Jump
-		case 0:
-			jumping = true;
-			break;
-		// Left
-		case 1:
-			moving = true;
-			leftright = true;
-			break;
-		// Right
-		case 2:
-			moving = true;
-			leftright = false;
-			break;
-		default:
-			moving = false;
-			jumping = false;
-		}
+		this.moving = false;
+		this.leftright = true;
+		this.landed = false;
 	}
 
 	public void close() {
 		this.closed = true;
-	}
-
-	public void startMoving() {
-		this.moving = true;
 	}
 
 	public void stopMoving() {
@@ -70,27 +46,74 @@ public class MoveRequests extends Thread {
 	}
 
 	private void sendMovementResponse() {
+		int pos = 1;
+		if (!leftright)
+			pos = 2;
+		queue.enqueue(sender.jsonMoveResponse(pos));
+	}
+
+	private void handleMovement() {
 		double offset = 0.01;
 		if (leftright) {
 			offset *= -1;
 		}
 		sender.addxPos(offset);
-		queue.enqueue(sender.jsonMoveResponse(pos));
+	}
+
+	public void jumpUp() {
+		if (landed && !jumping) {
+			landed = false;
+			jumping = true;
+			vVel = 0.06;
+			startYPos = sender.getyPos();
+		}
+	}
+
+	public void moveLeft() {
+		moving = true;
+		leftright = true;
+	}
+
+	public void moveRight() {
+		moving = true;
+		leftright = false;
+	}
+
+	private void handleJumping() {
+		double offset = 0.001;
+		// Fall Detection
+		if (sender.getyPos() < baseYPlate) { // Landed
+			sender.setyPos(baseYPlate);
+			landed = true;
+			jumping = false;
+		} else if (!this.jumping && !this.landed) { // Falling
+			sender.addyPos(-vVel);
+			vVel += 0.001;
+		} else if (this.jumping
+				&& ((sender.getyPos() - startYPos) < maxJumpHeight)) { // Jumping
+			sender.addyPos(vVel);
+			vVel -= 0.001;
+		} else {
+			this.jumping = false;
+		}
 	}
 
 	@Override
 	public void run() {
-		while (moving) {
-			if (closed)
-				return;
-			try {
+		try {
+			while (!closed) {
 				Thread.sleep(15);
+				handleJumping();
 				if (moving)
+					handleMovement();
+				if (moving || jumping || !landed)
 					sendMovementResponse();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+		if (closed)
+			return;
 	}
 }

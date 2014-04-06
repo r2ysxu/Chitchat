@@ -48,6 +48,7 @@ public class EchoEndpoint {
 
 		if (value.contains("join")) {
 			pl.sendNewJoinerResponse(session, (String) jsonMap.get("name"));
+			pl.startMovement(session);
 		} else if (value.contains("chat")) {
 			pl.sendTextResponse(session, (String) jsonMap.get("message"));
 		} else if (value.equals("move")) {
