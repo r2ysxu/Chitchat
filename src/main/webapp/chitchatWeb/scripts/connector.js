@@ -1,4 +1,3 @@
-var URL = "ws://25.6.13.201:8080/Chitchat/echo";
 var websocket;
 var playerIndex = -1;
 
@@ -148,10 +147,15 @@ function handleWalkKeys(pos) {
 	}
 }
 
+var lastShotTime = new Date().getTime();
+
 function throwSnowball() {
-	s = new Snowball();
-	s.initSnowballBuffer();
-	var hi = setInterval(s.drawSnowball, 15);
+	var currentTime = new Date().getTime();
+	if ((currentTime - lastShotTime) > 500) {
+		lastShotTime = currentTime;
+		//Shoot
+		players[playerIndex].throwSnowball();
+	}
 }
 
 function handleKeyDownEvents() {

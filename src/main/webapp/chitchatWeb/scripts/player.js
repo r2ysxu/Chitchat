@@ -9,8 +9,10 @@ function Player(name) {
 	this.xPos = 0.0;
 	this.yPos = 0.0;
 
-	this.initPlayerBuffer = initPlayerBuffer;
-	function initPlayerBuffer() {
+	var snowballs = new Array();
+	this.maxSnowballs = 3;
+
+	this.initPlayerBuffer = function initPlayerBuffer() {
 		this.verticesBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.verticesBuffer);
 		var vertices = [ -0.5, 0.5, 0.0, -0.5, -0.5, 0.0, 0.5, 0.5, 0.0, 0.5,
@@ -29,10 +31,25 @@ function Player(name) {
 		var plVertexIndices = [ 0, 1, 2, 0, 2, 3 ];
 		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,
 				new Uint16Array(plVertexIndices), gl.STATIC_DRAW);
+	};
+
+	this.initSnowballsBuffer = function initSnowballsBuffer() {
+		for (var i = 0; i < this.maxSnowballs; i++) {
+			snowballs[i] = new Snowball();
+			snowballs[i].initSnowballBuffer();
+		}
 	}
 
-	this.drawPlayer = drawPlayer;
-	function drawPlayer() {
+	var thrownSb = 0;
+
+	this.throwSnowball = function throwSnowball() {
+		snowballs[thrownSb].inflight = true;
+		thrownSb++;
+		if (thrownSb >= this.maxSnowballs)
+			thrownSb = 0;
+	};
+
+	this.drawPlayer = function drawPlayer() {
 		// Initial Translation
 		loadIdentity();
 		mvTranslate([ -0.0, 0.0, -6.0 ]);
@@ -65,15 +82,23 @@ function Player(name) {
 
 		// Restore the original matrix
 		mvPopMatrix();
-	}
+
+		// Draw Snowball;
+		for (var i = 0; i < this.maxSnowballs; i++) {
+			if (snowballs[i].inflight) {
+				snowballs[i].animateSnowball();
+			} else {
+				snowballs[i].updatePosition(this.xPos, 0);
+			}
+		}
+	};
 
 	this.landed = false;
 	this.walking = false;
 	this.leftright = true;
 	this.jumping = true;
 
-	this.correctTexture = correctTexture;
-	function correctTexture() {
+	this.correctTexture = function correctTexture() {
 		if (this.jumping && this.leftright)
 			return textures[3];
 		else if (this.jumping && !this.leftright)
@@ -82,5 +107,5 @@ function Player(name) {
 			return textures[2];
 		else
 			return textures[1];
-	}
+	};
 }

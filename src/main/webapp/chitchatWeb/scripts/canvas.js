@@ -162,13 +162,12 @@ function initBgBuffer() {
 }
 
 
-var s;
-
 function initBuffers() {
 	initBgBuffer();
-	for ( var i = 0; i < maxPlayers; i++) {
+	for (var i = 0; i < maxPlayers; i++) {
 		players[i] = new Player('Player ' + i);
 		players[i].initPlayerBuffer();
+		players[i].initSnowballsBuffer();
 	}
 }
 
@@ -192,7 +191,6 @@ function initTexture(imagePath) {
 
 var textures = Array();
 function initAllTexture() {
-	textures[5] = initTexture("chitchatWeb/images/blanksmall.png")
 	textures[4] = initTexture("chitchatWeb/images/jrpepeJumpRight.png");
 	textures[3] = initTexture("chitchatWeb/images/jrpepeJumpLeft.png");
 	textures[2] = initTexture("chitchatWeb/images/jrpepeLeft.png");
@@ -248,7 +246,7 @@ function drawScene() {
 	perspectiveMatrix = makePerspective(45, 640.0 / 480.0, 0.1, 100.0);
 
 	drawBackground();
-	for ( var i = 0; i < maxPlayers; i++) {
+	for (var i = 0; i < maxPlayers; i++) {
 		if (players[i].online)
 			players[i].drawPlayer();
 	}

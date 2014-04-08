@@ -1,0 +1,1 @@
+var URL = "ws://135.155.69.33:8080/Chitchat/echo";
