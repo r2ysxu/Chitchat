@@ -161,6 +161,9 @@ function initBgBuffer() {
 			gl.STATIC_DRAW);
 }
 
+
+var s;
+
 function initBuffers() {
 	initBgBuffer();
 	for ( var i = 0; i < maxPlayers; i++) {
@@ -189,6 +192,7 @@ function initTexture(imagePath) {
 
 var textures = Array();
 function initAllTexture() {
+	textures[5] = initTexture("chitchatWeb/images/blanksmall.png")
 	textures[4] = initTexture("chitchatWeb/images/jrpepeJumpRight.png");
 	textures[3] = initTexture("chitchatWeb/images/jrpepeJumpLeft.png");
 	textures[2] = initTexture("chitchatWeb/images/jrpepeLeft.png");

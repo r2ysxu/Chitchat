@@ -148,7 +148,16 @@ function handleWalkKeys(pos) {
 	}
 }
 
+function throwSnowball() {
+	s = new Snowball();
+	s.initSnowballBuffer();
+	var hi = setInterval(s.drawSnowball, 15);
+}
+
 function handleKeyDownEvents() {
+	if (currentlyPressedKeys[32]) {// Space
+		throwSnowball();
+	}
 	if (currentlyPressedKeys[33]) { // Page Up
 	}
 	if (currentlyPressedKeys[34]) { // Page Down
