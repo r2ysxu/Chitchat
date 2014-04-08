@@ -1,10 +1,7 @@
 package com.chitchat.conn.request;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -100,7 +97,6 @@ public class PlayerRequestListener {
 
 	public void sendMovementResponse(Session senderSession, int pos) {
 		// System.out.println("Move Request: " + pos);
-		PlayerRequest sender = clients.get(senderSession.toString());
 		MoveRequests mr = moveRequests.get(senderSession.toString());
 		switch (pos) {
 		case 0:
@@ -116,14 +112,12 @@ public class PlayerRequestListener {
 	}
 
 	public void sendStopResponse(Session senderSession) {
-		PlayerRequest sender = clients.get(senderSession.toString());
 		MoveRequests moveRq = moveRequests.get(senderSession.toString());
 		moveRq.stopMoving();
 	}
 
 	private void stopMovement(Session senderSession) {
 		// System.out.println("Stop Request: ");
-		PlayerRequest sender = clients.get(senderSession.toString());
 		MoveRequests moveRq = moveRequests.get(senderSession.toString());
 		moveRq.close();
 		moveRequests.remove(senderSession.toString());

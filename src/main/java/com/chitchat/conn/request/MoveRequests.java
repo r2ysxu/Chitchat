@@ -3,7 +3,6 @@ package com.chitchat.conn.request;
 import com.chitchat.conn.model.PlayerRequest;
 
 public class MoveRequests extends Thread {
-	private static double xSpeed = 0.01;
 	// private static Map<String, PlayerRequest> clients;
 	private static RequestQueue queue;
 	private PlayerRequest sender;

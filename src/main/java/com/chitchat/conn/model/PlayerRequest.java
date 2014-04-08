@@ -11,7 +11,6 @@ public class PlayerRequest {
 
 	public PlayerRequest(Session session, int index) {
 		this.session = session;
-		this.name = name;
 		this.xPos = 0.0;
 		this.yPos = 0.0;
 		this.index = index;
