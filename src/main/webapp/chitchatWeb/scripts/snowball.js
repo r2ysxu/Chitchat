@@ -5,10 +5,19 @@ function Snowball() {
 	this.verticesTextureCoordBuffer;
 	this.verticesIndexBuffer;
 
+	this.startX = 0.0;
+	this.startY = 0.0;
+
 	this.xPos = 0.0;
 	this.yPos = 0.0;
 
+	var baseVVel = 0.0005;
+	var baseHVel = 0.04;
+
+	var vVel = baseVVel;
+
 	this.inflight = false;
+	this.leftright = false;
 
 	this.initSnowballBuffer = function initSnowballBuffer() {
 		this.verticesBuffer = gl.createBuffer();
@@ -31,20 +40,27 @@ function Snowball() {
 				new Uint16Array(plVertexIndices), gl.STATIC_DRAW);
 	};
 
-	this.updatePosition = function updatePosition(x, y) {
-		console.log("xy");
-		this.xPos = x;
-		this.yPos = y;
+	this.updatePosition = function updatePosition(x, y, leftright) {
+		this.startX = x;
+		this.startY = y;
+		this.xPos = this.startX;
+		this.yPos = this.startY;
+		this.leftright = leftright;
 	};
 
 	this.animateSnowball = function animateSnowball() {
 		this.drawSnowball();
-		this.xPos += 0.02;
-		this.yPos -= 0.01;
+		if (this.leftright)
+			this.xPos -= baseHVel;
+		else
+			this.xPos += baseHVel;
+		this.yPos -= vVel;
+		vVel += baseVVel;
 		if (this.yPos < -1.82 || this.xPos < -3 || this.yPos > 3) {
-			this.xPos = 0.0;
-			this.yPos = 0.0;
+			this.xPos = this.startX;
+			this.yPos = this.startY;
 			this.inflight = false;
+			vVel = baseVVel;
 		}
 	};
 

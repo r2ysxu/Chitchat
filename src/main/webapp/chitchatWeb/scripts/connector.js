@@ -170,14 +170,14 @@ function handleKeyDownEvents() {
 		if (!players[playerIndex].walking) {
 			var request = '{ "type" : "move", "pos" : "1" }';
 			websocket.send(request);
-			players[playerIndex].walking = true;
+			players[playerIndex].startWalking();
 		}
 	}
 	if (currentlyPressedKeys[39]) { // Right cursor key
 		if (!players[playerIndex].walking) {
 			var request = '{ "type" : "move", "pos" : "2" }';
 			websocket.send(request);
-			players[playerIndex].walking = true;
+			players[playerIndex].startWalking();
 		}
 	}
 	if (currentlyPressedKeys[38]) { // Up cursor key

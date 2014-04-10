@@ -94,8 +94,7 @@ public class PlayerRequest {
 	public String jsonMoveResponse(int pos, boolean falling) {
 		String str = "{" + "\"type\" : \"move\"" + ", \"index\" : \"" + index
 				+ "\", \"pos\" : \"" + pos + "\", \"fall\" : " + falling
-				+ ", \"xPos\" : \"" + xPos + "\"" + ", \"yPos\" : \"" + yPos
-				+ "\"" + "}";
+				+ ", \"xPos\" : " + xPos + ", \"yPos\" : " + yPos + "}";
 		// System.out.println("Move Rsp:" + str);
 		return str;
 	}

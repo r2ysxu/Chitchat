@@ -38,12 +38,13 @@ function Player(name) {
 			snowballs[i] = new Snowball();
 			snowballs[i].initSnowballBuffer();
 		}
-	}
+	};
 
 	var thrownSb = 0;
 
 	this.throwSnowball = function throwSnowball() {
 		snowballs[thrownSb].inflight = true;
+		snowballs[thrownSb].updatePosition(parseFloat(this.xPos), parseFloat(this.yPos) + 0.25, this.leftright);
 		thrownSb++;
 		if (thrownSb >= this.maxSnowballs)
 			thrownSb = 0;
@@ -87,8 +88,6 @@ function Player(name) {
 		for (var i = 0; i < this.maxSnowballs; i++) {
 			if (snowballs[i].inflight) {
 				snowballs[i].animateSnowball();
-			} else {
-				snowballs[i].updatePosition(this.xPos, 0);
 			}
 		}
 	};
@@ -97,6 +96,10 @@ function Player(name) {
 	this.walking = false;
 	this.leftright = true;
 	this.jumping = true;
+
+	this.startWalking = function startWalking() {
+		this.walking = true;
+	};
 
 	this.correctTexture = function correctTexture() {
 		if (this.jumping && this.leftright)
