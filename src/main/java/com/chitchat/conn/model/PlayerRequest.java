@@ -64,6 +64,7 @@ public class PlayerRequest {
 		this.name = name;
 	}
 
+	@Override
 	public boolean equals(Object comp) {
 		Session s = (Session) comp;
 		return session.equals(s);
@@ -78,8 +79,8 @@ public class PlayerRequest {
 
 	public String jsonJoinResponse(int pc) {
 		String str = "{" + "\"type\" : \"join\"" + ", \"index\" : " + index
-				+ ", \"name\" : " + "\"" + name + "\"" + ", \"pc\" :" + "\""
-				+ pc + "\"" + "}";
+				+ ", \"name\" : " + "\"" + name + "\"" + ", \"pc\" :" + pc
+				+ "}";
 		// System.out.println("Join Rsp:" + str);
 		return str;
 	}
