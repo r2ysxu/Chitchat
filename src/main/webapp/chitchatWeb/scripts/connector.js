@@ -160,7 +160,6 @@ function throwSnowball() {
 	if ((currentTime - lastShotTime) > 500) {
 		lastShotTime = currentTime;
 		// Shoot
-		players[playerIndex].throwSnowball();
 		var request = '{ "type" : "shoot" }';
 		websocket.send(request);
 	}

@@ -11,8 +11,10 @@ function Snowball() {
 	this.xPos = 0.0;
 	this.yPos = 0.0;
 
-	var baseVVel = 0.0005;
+	var vAcc = 0.0005;
+	var baseVVel = 0.005;
 	var baseHVel = 0.04;
+	var updown = true;
 
 	var vVel = baseVVel;
 
@@ -54,13 +56,23 @@ function Snowball() {
 			this.xPos -= baseHVel;
 		else
 			this.xPos += baseHVel;
-		this.yPos -= vVel;
-		vVel += baseVVel;
+		if (vVel <= 0.0)
+			updown = false;
+		if (updown) {
+			this.yPos += vVel;
+			vVel -= vAcc;
+		} else {
+			this.yPos -= vVel;
+			vVel += vAcc;
+		}
+
 		if (this.yPos < -1.82 || this.xPos < -3 || this.yPos > 3) {
 			this.xPos = this.startX;
 			this.yPos = this.startY;
 			this.inflight = false;
 			vVel = baseVVel;
+			projHeight = 0.0;
+			updown = true;
 		}
 	};
 
