@@ -41,6 +41,8 @@ function onMessage(event) {
 			moveResponse(response);
 		} else if (response.type == 'stop') {
 			stopResponse(response);
+		} else if (response.type == 'shoot') {
+			shootResponse(response);
 		} else if (response.type == 'quit') {
 			pc = response.pc;
 			document.getElementById('currentChatters').innerText = 'Currently: '
@@ -103,6 +105,10 @@ function moveResponse(response) {
 	}
 }
 
+function shootResponse(response) {
+	players[response.index].throwSnowball();
+}
+
 // Event Handler
 var keyUp = true;
 var currentlyPressedKeys = {};
@@ -153,8 +159,10 @@ function throwSnowball() {
 	var currentTime = new Date().getTime();
 	if ((currentTime - lastShotTime) > 500) {
 		lastShotTime = currentTime;
-		//Shoot
+		// Shoot
 		players[playerIndex].throwSnowball();
+		var request = '{ "type" : "shoot" }';
+		websocket.send(request);
 	}
 }
 

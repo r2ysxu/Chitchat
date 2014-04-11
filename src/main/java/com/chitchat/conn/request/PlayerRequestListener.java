@@ -123,6 +123,11 @@ public class PlayerRequestListener {
 		moveRequests.remove(senderSession.toString());
 	}
 
+	public void sendShootResponse(Session senderSession) {
+		PlayerRequest sender = clients.get(senderSession.toString());
+		queue.enqueue(sender.jsonShootResponse());
+	}
+
 	public void sendTextResponse(Session senderSession, String message) {
 		PlayerRequest sender = clients.get(senderSession.toString());
 		queue.enqueue(sender.jsonChatResponse(message));

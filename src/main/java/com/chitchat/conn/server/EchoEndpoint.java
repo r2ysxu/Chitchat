@@ -52,6 +52,8 @@ public class EchoEndpoint {
 					Integer.parseInt(jsonMap.get("pos").toString()));
 		} else if (value.equals("stop")) {
 			pl.sendStopResponse(session);
+		} else if (value.equals("shoot")) {
+			pl.sendShootResponse(session);
 		}
 	}
 

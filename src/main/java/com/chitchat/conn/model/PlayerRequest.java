@@ -70,46 +70,53 @@ public class PlayerRequest {
 	}
 
 	public String jsonConnResponse(int pc) {
-		String str = "{" + "\"type\" : \"conn\"" + ", \"index\" : \"" + index
-				+ "\"" + ", \"name\" : " + "\"" + name + "\"" + ", \"pc\" :"
-				+ "\"" + pc + "\"" + "}";
+		String str = "{" + "\"type\" : \"conn\"" + ", \"index\" : " + index
+				+ ", \"name\" : " + "\"" + name + "\"" + ", \"pc\" :" + "\""
+				+ pc + "\"" + "}";
 		return str;
 	}
 
 	public String jsonJoinResponse(int pc) {
-		String str = "{" + "\"type\" : \"join\"" + ", \"index\" : \"" + index
-				+ "\"" + ", \"name\" : " + "\"" + name + "\"" + ", \"pc\" :"
-				+ "\"" + pc + "\"" + "}";
+		String str = "{" + "\"type\" : \"join\"" + ", \"index\" : " + index
+				+ ", \"name\" : " + "\"" + name + "\"" + ", \"pc\" :" + "\""
+				+ pc + "\"" + "}";
 		// System.out.println("Join Rsp:" + str);
 		return str;
 	}
 
 	public String jsonQuitResponse(int pc) {
-		String str = "{" + "\"type\" : \"quit\"" + ", \"index\" : \"" + index
-				+ "\"" + ", \"pc\" :" + "\"" + pc + "\"" + "}";
+		String str = "{" + "\"type\" : \"quit\"" + ", \"index\" : " + index
+				+ ", \"pc\" :" + "\"" + pc + "\"" + "}";
 		// System.out.println("Quit Rsp:" + str);
 		return str;
 	}
 
 	public String jsonMoveResponse(int pos, boolean falling) {
-		String str = "{" + "\"type\" : \"move\"" + ", \"index\" : \"" + index
-				+ "\", \"pos\" : \"" + pos + "\", \"fall\" : " + falling
+		String str = "{" + "\"type\" : \"move\"" + ", \"index\" : " + index
+				+ ", \"pos\" : \"" + pos + "\", \"fall\" : " + falling
 				+ ", \"xPos\" : " + xPos + ", \"yPos\" : " + yPos + "}";
 		// System.out.println("Move Rsp:" + str);
 		return str;
 	}
 
 	public String jsonStopResponse() {
-		String str = "{" + "\"type\" : \"stop\"" + ", \"index\" : \"" + index
-				+ "\"" + "}";
+		String str = "{" + "\"type\" : \"stop\"" + ", \"index\" : " + index
+				+ "}";
+		System.out.println("Stop Rsp:" + str);
+		return str;
+	}
+
+	public String jsonShootResponse() {
+		String str = "{" + "\"type\" : \"shoot\"" + ", \"index\" : " + index
+				+ "}";
 		System.out.println("Stop Rsp:" + str);
 		return str;
 	}
 
 	public String jsonChatResponse(String message) {
-		String str = "{" + "\"type\" : \"chat\"" + ", \"index\" : \"" + index
-				+ "\"" + ", \"name\" : " + "\"" + name + "\""
-				+ ", \"message\": \"" + message + "\"" + "}";
+		String str = "{" + "\"type\" : \"chat\"" + ", \"index\" : " + index
+				+ ", \"name\" : " + "\"" + name + "\"" + ", \"message\": \""
+				+ message + "\"" + "}";
 		// System.out.println("Chat Rsp:" + str);
 		return str;
 	}
