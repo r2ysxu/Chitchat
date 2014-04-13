@@ -45,6 +45,7 @@ function onMessage(event) {
 			shootResponse(response);
 		} else if (response.type == 'quit') {
 			pc = response.pc;
+			players[response.index].online = false;
 			document.getElementById('currentChatters').innerText = 'Currently: '
 					+ pc + ' in chat';
 		}
@@ -76,6 +77,8 @@ function connResponse(response) {
 function joinResponse(response) {
 	players[response.index].online = true;
 	players[response.index].name = response.name;
+	players[response.index].xPos = response.xPos;
+	players[response.index].yPos = response.yPos;
 	pc = response.pc;
 	document.getElementById('currentChatters').innerText = 'Currently: ' + pc
 			+ ' in chat';

@@ -79,7 +79,7 @@ function Snowball() {
 	this.drawSnowball = function drawSnowball() {
 		// Initial Translation
 		loadIdentity();
-		mvTranslate([ -0.0, 0.0, -5.0 ]);
+		mvTranslate([ -0.0, 0.0, -5.9 ]);
 
 		// Save Matrix Location
 		mvPushMatrix();

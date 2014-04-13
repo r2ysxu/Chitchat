@@ -61,7 +61,6 @@ public class EchoEndpoint {
 	public void onClose(Session session, CloseReason closeReason) {
 		System.out.println(String.format("Session %s closed because of %s",
 				session.getId(), closeReason));
-		pl.removePlayerRequest(session);
 		pl.sendQuitterResponse(session);
 		System.out.println("Still active: " + clients.size());
 	}

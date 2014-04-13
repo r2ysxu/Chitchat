@@ -72,19 +72,10 @@ public class PlayerRequestListener {
 	public void sendQuitterResponse(Session senderSession) {
 		stopMovement(senderSession);
 		PlayerRequest sender = clients.get(senderSession.toString());
-		for (Entry<String, PlayerRequest> client : clients.entrySet()) {
-			PlayerRequest clientValue = client.getValue();
-			Session clientSession = clientValue.getSession();
-			try {
-				clientSession.getBasicRemote().sendObject(
-						sender.jsonQuitResponse(clients.size()));
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (EncodeException e) {
-				e.printStackTrace();
-			}
-		}
-		moveRequests.remove(senderSession.toString());
+		System.out.println("Removed:" + senderSession.toString() + " index: "
+				+ sender.getIndex());
+		removePlayerRequest(senderSession);
+		queue.enqueue(sender.jsonQuitResponse(clients.size()));
 	}
 
 	public void startMovement(Session senderSession) {
@@ -117,7 +108,6 @@ public class PlayerRequestListener {
 	}
 
 	private void stopMovement(Session senderSession) {
-		// System.out.println("Stop Request: ");
 		MoveRequests moveRq = moveRequests.get(senderSession.toString());
 		moveRq.close();
 		moveRequests.remove(senderSession.toString());

@@ -80,7 +80,7 @@ public class PlayerRequest {
 	public String jsonJoinResponse(int pc) {
 		String str = "{" + "\"type\" : \"join\"" + ", \"index\" : " + index
 				+ ", \"name\" : " + "\"" + name + "\"" + ", \"pc\" :" + pc
-				+ "}";
+				+ ", \"xPos\" : " + xPos + ", \"yPos\" : " + yPos + "}";
 		// System.out.println("Join Rsp:" + str);
 		return str;
 	}
@@ -103,14 +103,14 @@ public class PlayerRequest {
 	public String jsonStopResponse() {
 		String str = "{" + "\"type\" : \"stop\"" + ", \"index\" : " + index
 				+ "}";
-		System.out.println("Stop Rsp:" + str);
+		// System.out.println("Stop Rsp:" + str);
 		return str;
 	}
 
 	public String jsonShootResponse() {
 		String str = "{" + "\"type\" : \"shoot\"" + ", \"index\" : " + index
 				+ "}";
-		System.out.println("Stop Rsp:" + str);
+		// System.out.println("Stop Rsp:" + str);
 		return str;
 	}
 

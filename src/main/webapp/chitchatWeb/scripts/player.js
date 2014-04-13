@@ -53,7 +53,7 @@ function Player(name) {
 	this.drawPlayer = function drawPlayer() {
 		// Initial Translation
 		loadIdentity();
-		mvTranslate([ -0.0, 0.0, -4.0 ]);
+		mvTranslate([ -0.0, 0.0, -6.0 ]);
 
 		// Save Matrix Location
 		mvPushMatrix();
