@@ -22,7 +22,6 @@ import com.chitchat.conn.model.ShootRequest;
 public class PlayerRequestListener {
 
 	private final Map<String, PlayerRequest> clients = new HashMap<String, PlayerRequest>();
-	private final Map<String, MoveRequest> moveRequests = new HashMap<String, MoveRequest>();
 	private final Map<String, ShootRequest> shootRequests = new HashMap<String, ShootRequest>();
 
 	private boolean unusedplayerSlots[];
@@ -53,7 +52,7 @@ public class PlayerRequestListener {
 
 	public void addPlayerRequest(Session session, String name) {
 		int nextIndex = occupyPlayerSlot();
-		clients.put(session.toString(), new PlayerRequest(session, nextIndex));
+		clients.put(session.toString(), new PlayerRequest(session, queue, nextIndex));
 	}
 
 	public void removePlayerRequest(Session session) {
@@ -103,16 +102,13 @@ public class PlayerRequestListener {
 	}
 
 	public void startMovement(Session senderSession) {
-		// System.out.println("Move Request: " + pos);
 		PlayerRequest sender = clients.get(senderSession.toString());
-		MoveRequest mr = new MoveRequest(queue, sender);
-		moveRequests.put(senderSession.toString(), mr);
-		mr.start();
+		sender.startMoving(queue);
 	}
 
 	public void sendMovementResponse(Session senderSession, int pos) {
-		// System.out.println("Move Request: " + pos);
-		MoveRequest mr = moveRequests.get(senderSession.toString());
+		PlayerRequest sender = clients.get(senderSession.toString());
+		MoveRequest mr = sender.getMoveRequest();
 		switch (pos) {
 		case 0:
 			mr.jumpUp();
@@ -127,14 +123,13 @@ public class PlayerRequestListener {
 	}
 
 	public void sendStopResponse(Session senderSession) {
-		MoveRequest moveRq = moveRequests.get(senderSession.toString());
-		moveRq.stopMoving();
+		PlayerRequest sender = clients.get(senderSession.toString());
+		sender.getMoveRequest().stopMoving();
 	}
 
 	private void stopMovement(Session senderSession) {
-		MoveRequest moveRq = moveRequests.get(senderSession.toString());
-		moveRq.close();
-		moveRequests.remove(senderSession.toString());
+		PlayerRequest sender = clients.get(senderSession.toString());
+		sender.getMoveRequest().close();
 	}
 
 	public void sendShootResponse(Session senderSession) {

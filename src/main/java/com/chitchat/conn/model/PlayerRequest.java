@@ -2,18 +2,23 @@ package com.chitchat.conn.model;
 
 import javax.websocket.Session;
 
+import com.chitchat.conn.request.RequestQueue;
+
 public class PlayerRequest {
 	private Session session;
 	private String name;
 	private double xPos;
 	private double yPos;
 	private int index;
+	private MoveRequest moveRequest;
+	private ShootRequest shootRequest;
 
-	public PlayerRequest(Session session, int index) {
+	public PlayerRequest(Session session, RequestQueue queue, int index) {
 		this.session = session;
 		this.xPos = 0.0;
 		this.yPos = 0.0;
 		this.index = index;
+		moveRequest = new MoveRequest(queue, this);
 	}
 
 	public Session getSession() {
@@ -68,6 +73,14 @@ public class PlayerRequest {
 	public boolean equals(Object comp) {
 		Session s = (Session) comp;
 		return session.equals(s);
+	}
+
+	public MoveRequest getMoveRequest() {
+		return moveRequest;
+	}
+
+	public void startMoving(RequestQueue queue) {
+		moveRequest.start();
 	}
 
 	public String jsonConnResponse(int pc) {
