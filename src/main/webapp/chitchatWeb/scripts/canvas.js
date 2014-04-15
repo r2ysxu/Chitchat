@@ -22,8 +22,8 @@ function start() {
 
 	if (gl) {
 		gl.clearColor(1.0, 1.0, 1.0, 1.0); // Set clear color to white
-		gl.enable(gl.DEPTH_TEST); // Enable depth testing
-		gl.depthFunc(gl.LEQUAL); // Near things obscure far things
+		//gl.enable(gl.DEPTH_TEST); // Enable depth testing
+		//gl.depthFunc(gl.LEQUAL);
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 		gl.viewport(0, 0, canvas.width, canvas.height);
 		gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);

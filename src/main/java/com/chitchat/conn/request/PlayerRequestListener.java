@@ -1,6 +1,7 @@
 package com.chitchat.conn.request;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -9,6 +10,7 @@ import javax.websocket.EncodeException;
 import javax.websocket.Session;
 
 import com.chitchat.conn.model.PlayerRequest;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 /**
  * This Class Listens to requests
@@ -21,16 +23,35 @@ public class PlayerRequestListener {
 	private final Map<String, PlayerRequest> clients = new HashMap<String, PlayerRequest>();
 	private final Map<String, MoveRequests> moveRequests = new HashMap<String, MoveRequests>();
 
+	private boolean unusedplayerSlots[];
+
 	private RequestQueue queue;
 
 	public PlayerRequestListener() {
+		unusedplayerSlots = new boolean[4];
+		Arrays.fill(unusedplayerSlots, false);
 		queue = new RequestQueue(clients);
 		queue.start();
 	}
 
+	private int occupyPlayerSlot() {
+		int i;
+		for (i = 0; i < unusedplayerSlots.length; i++) {
+			if (!unusedplayerSlots[i]) {
+				unusedplayerSlots[i] = true;
+				break;
+			}
+		}
+		return i;
+	}
+
+	private void freePlayerSlot(int slotIndex) {
+		unusedplayerSlots[slotIndex] = false;
+	}
+
 	public void addPlayerRequest(Session session, String name) {
-		clients.put(session.toString(),
-				new PlayerRequest(session, clients.size()));
+		int nextIndex = occupyPlayerSlot();
+		clients.put(session.toString(), new PlayerRequest(session, nextIndex));
 	}
 
 	public void removePlayerRequest(Session session) {
@@ -72,6 +93,7 @@ public class PlayerRequestListener {
 	public void sendQuitterResponse(Session senderSession) {
 		stopMovement(senderSession);
 		PlayerRequest sender = clients.get(senderSession.toString());
+		freePlayerSlot(sender.getIndex());
 		System.out.println("Removed:" + senderSession.toString() + " index: "
 				+ sender.getIndex());
 		removePlayerRequest(senderSession);
