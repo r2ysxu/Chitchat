@@ -2,4 +2,5 @@
 /.settings
 /.classpath
 /.project
+/src/main/webapp/chitchatWeb/scripts/others.js
 .DS_Store
