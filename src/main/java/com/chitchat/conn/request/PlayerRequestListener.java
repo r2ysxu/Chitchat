@@ -9,8 +9,9 @@ import java.util.Map.Entry;
 import javax.websocket.EncodeException;
 import javax.websocket.Session;
 
+import com.chitchat.conn.model.MoveRequest;
 import com.chitchat.conn.model.PlayerRequest;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+import com.chitchat.conn.model.ShootRequest;
 
 /**
  * This Class Listens to requests
@@ -21,7 +22,8 @@ import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 public class PlayerRequestListener {
 
 	private final Map<String, PlayerRequest> clients = new HashMap<String, PlayerRequest>();
-	private final Map<String, MoveRequests> moveRequests = new HashMap<String, MoveRequests>();
+	private final Map<String, MoveRequest> moveRequests = new HashMap<String, MoveRequest>();
+	private final Map<String, ShootRequest> shootRequests = new HashMap<String, ShootRequest>();
 
 	private boolean unusedplayerSlots[];
 
@@ -103,14 +105,14 @@ public class PlayerRequestListener {
 	public void startMovement(Session senderSession) {
 		// System.out.println("Move Request: " + pos);
 		PlayerRequest sender = clients.get(senderSession.toString());
-		MoveRequests mr = new MoveRequests(queue, sender);
+		MoveRequest mr = new MoveRequest(queue, sender);
 		moveRequests.put(senderSession.toString(), mr);
 		mr.start();
 	}
 
 	public void sendMovementResponse(Session senderSession, int pos) {
 		// System.out.println("Move Request: " + pos);
-		MoveRequests mr = moveRequests.get(senderSession.toString());
+		MoveRequest mr = moveRequests.get(senderSession.toString());
 		switch (pos) {
 		case 0:
 			mr.jumpUp();
@@ -125,12 +127,12 @@ public class PlayerRequestListener {
 	}
 
 	public void sendStopResponse(Session senderSession) {
-		MoveRequests moveRq = moveRequests.get(senderSession.toString());
+		MoveRequest moveRq = moveRequests.get(senderSession.toString());
 		moveRq.stopMoving();
 	}
 
 	private void stopMovement(Session senderSession) {
-		MoveRequests moveRq = moveRequests.get(senderSession.toString());
+		MoveRequest moveRq = moveRequests.get(senderSession.toString());
 		moveRq.close();
 		moveRequests.remove(senderSession.toString());
 	}

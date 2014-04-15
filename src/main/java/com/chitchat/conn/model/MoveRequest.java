@@ -1,8 +1,8 @@
-package com.chitchat.conn.request;
+package com.chitchat.conn.model;
 
-import com.chitchat.conn.model.PlayerRequest;
+import com.chitchat.conn.request.RequestQueue;
 
-public class MoveRequests extends Thread {
+public class MoveRequest extends Thread {
 	// private static Map<String, PlayerRequest> clients;
 	private static RequestQueue queue;
 	private PlayerRequest sender;
@@ -29,8 +29,8 @@ public class MoveRequests extends Thread {
 	 * leftright = false; break; default: moving = false; jumping = false; } }
 	 */
 
-	public MoveRequests(RequestQueue queue, PlayerRequest sender) {
-		MoveRequests.queue = queue;
+	public MoveRequest(RequestQueue queue, PlayerRequest sender) {
+		MoveRequest.queue = queue;
 		this.sender = sender;
 		this.closed = false;
 		this.moving = false;
