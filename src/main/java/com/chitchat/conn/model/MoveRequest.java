@@ -90,11 +90,15 @@ public class MoveRequest extends Thread {
 		} else if (!this.jumping && !this.landed) { // Falling
 			sender.addyPos(vVel);
 			vVel -= 0.001;
-			sender.addxPos(jumphVel);
+			if (hVel == 0.0 && sender.getxPos() > -maxSceneWidth
+					&& sender.getxPos() < maxSceneWidth)
+				sender.addxPos(jumphVel);
 		} else if (this.jumping && (vVel >= 0)) { // Jumping
 			sender.addyPos(vVel);
 			vVel -= 0.001;
-			sender.addxPos(jumphVel);
+			if (hVel == 0.0 && sender.getxPos() > -maxSceneWidth
+					&& sender.getxPos() < maxSceneWidth)
+				sender.addxPos(jumphVel);
 		} else {
 			jumping = false;
 		}
