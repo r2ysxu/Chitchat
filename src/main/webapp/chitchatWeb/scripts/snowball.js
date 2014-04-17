@@ -50,23 +50,29 @@ function Snowball() {
 		this.leftright = leftright;
 	};
 
+	var lasttime = (new Date()).getTime();
+
 	this.animateSnowball = function animateSnowball() {
 		this.drawSnowball();
-		if (this.leftright)
-			this.xPos -= baseHVel;
-		else
-			this.xPos += baseHVel;
-		if (vVel <= 0.0)
-			updown = false;
-		if (updown) {
-			this.yPos += vVel;
-			vVel -= vAcc;
-		} else {
-			this.yPos -= vVel;
-			vVel += vAcc;
+		var curtime = (new Date()).getTime();
+		if ((curtime - lasttime) >= 15) {
+			if (this.leftright)
+				this.xPos -= baseHVel;
+			else
+				this.xPos += baseHVel;
+			if (vVel <= 0.0)
+				updown = false;
+			if (updown) {
+				this.yPos += vVel;
+				vVel -= vAcc;
+			} else {
+				this.yPos -= vVel;
+				vVel += vAcc;
+			}
+			lasttime = curtime;
 		}
 
-		if (this.yPos < -1.82 || this.xPos < -3 || this.yPos > 3) {
+		if (this.yPos < -2.2 || this.xPos < -3 || this.yPos > 3) {
 			this.xPos = this.startX;
 			this.yPos = this.startY;
 			this.inflight = false;

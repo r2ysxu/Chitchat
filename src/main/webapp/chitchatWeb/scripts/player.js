@@ -8,6 +8,10 @@ function Player(name) {
 	this.verticesIndexBuffer;
 	this.xPos = 0.0;
 	this.yPos = 0.0;
+	this.landed = false;
+	this.walking = false;
+	this.leftright = true;
+	this.jumping = true;
 
 	var snowballs = new Array();
 	this.maxSnowballs = 3;
@@ -91,11 +95,6 @@ function Player(name) {
 			}
 		}
 	};
-
-	this.landed = false;
-	this.walking = false;
-	this.leftright = true;
-	this.jumping = true;
 
 	this.startWalking = function startWalking() {
 		this.walking = true;
