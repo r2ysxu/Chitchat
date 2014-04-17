@@ -5,16 +5,17 @@ import com.chitchat.conn.request.RequestQueue;
 public class MoveRequest extends Thread {
 	private static RequestQueue queue;
 	private PlayerRequest sender;
-	private boolean moving;
 	private boolean jumping;
 	private boolean landed;
-	private boolean leftright;
 	private boolean closed;
 	private double vVel = 0.001;
-	private double hVel = 0.01;
+	private double hVel = 0.0;
+	private double jumphVel = 0.0;
+	private int pos = 1;
 
 	private static final double baseYPlate = -1.82;
-	private static final double initialVelocity = 0.03;
+	private static final double initialVerticalVelocity = 0.04;
+	private static final double initialHorizontalVelocity = 0.01;
 	private static final double maxSceneWidth = 3;
 
 	/*
@@ -31,8 +32,6 @@ public class MoveRequest extends Thread {
 		MoveRequest.queue = queue;
 		this.sender = sender;
 		this.closed = false;
-		this.moving = false;
-		this.leftright = true;
 		this.landed = false;
 	}
 
@@ -41,49 +40,43 @@ public class MoveRequest extends Thread {
 	}
 
 	public void stopMoving() {
-		this.moving = false;
+		hVel = 0.0;
 	}
 
 	private void sendMovementResponse() {
-		int pos = 1;
-		if (!leftright)
-			pos = 2;
 		queue.enqueue(sender.jsonMoveResponse(pos, !landed));
 	}
 
 	private void sendLandedResponse() {
-		int pos = 1;
-		if (!leftright)
-			pos = 2;
 		queue.enqueue(sender.jsonMoveResponse(pos, !landed));
 	}
 
 	private void handleMovement() {
-		double offset = 0.0;
-		if (leftright && sender.getxPos() > -maxSceneWidth) {
-			offset = -hVel;
-		} else if (sender.getxPos() < maxSceneWidth) {
-			offset = hVel;
+		if (hVel < 0 && sender.getxPos() <= -maxSceneWidth) {
+			hVel = 0.0;
+		} else if (hVel > 0 && sender.getxPos() >= maxSceneWidth) {
+			hVel = 0.0;
 		}
-		sender.addxPos(offset);
+		sender.addxPos(hVel);
 	}
 
 	public void jumpUp() {
 		if (landed && !jumping) {
 			landed = false;
 			jumping = true;
-			vVel = initialVelocity;
+			vVel = initialVerticalVelocity;
+			jumphVel = hVel;
 		}
 	}
 
 	public void moveLeft() {
-		moving = true;
-		leftright = true;
+		pos = 1;
+		hVel = -initialHorizontalVelocity;
 	}
 
 	public void moveRight() {
-		moving = true;
-		leftright = false;
+		pos = 2;
+		hVel = initialHorizontalVelocity;
 	}
 
 	private void handleJumping() {
@@ -92,16 +85,18 @@ public class MoveRequest extends Thread {
 			sender.setyPos(baseYPlate);
 			landed = true;
 			jumping = false;
+			jumphVel = 0.0;
 			sendLandedResponse();
 		} else if (!this.jumping && !this.landed) { // Falling
 			sender.addyPos(vVel);
 			vVel -= 0.001;
-		} else if (this.jumping
-				&& (vVel >= 0)) { // Jumping
+			sender.addxPos(jumphVel);
+		} else if (this.jumping && (vVel >= 0)) { // Jumping
 			sender.addyPos(vVel);
 			vVel -= 0.001;
+			sender.addxPos(jumphVel);
 		} else {
-			this.jumping = false;
+			jumping = false;
 		}
 	}
 
@@ -111,9 +106,8 @@ public class MoveRequest extends Thread {
 			while (!closed) {
 				Thread.sleep(15);
 				handleJumping();
-				if (moving)
-					handleMovement();
-				if (moving || jumping || !landed)
+				handleMovement();
+				if (hVel != 0.0 || jumping || !landed)
 					sendMovementResponse();
 			}
 		} catch (InterruptedException e) {
