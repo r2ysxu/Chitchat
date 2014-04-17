@@ -12,10 +12,9 @@ public class MoveRequest extends Thread {
 	private boolean closed;
 	private double vVel = 0.001;
 	private double hVel = 0.01;
-	private double startYPos;
 
 	private static final double baseYPlate = -1.82;
-	private static final double maxJumpHeight = 0.6;
+	private static final double initialVelocity = 0.03;
 	private static final double maxSceneWidth = 3;
 
 	/*
@@ -73,8 +72,7 @@ public class MoveRequest extends Thread {
 		if (landed && !jumping) {
 			landed = false;
 			jumping = true;
-			vVel = 0.06;
-			startYPos = sender.getyPos();
+			vVel = initialVelocity;
 		}
 	}
 
@@ -96,10 +94,10 @@ public class MoveRequest extends Thread {
 			jumping = false;
 			sendLandedResponse();
 		} else if (!this.jumping && !this.landed) { // Falling
-			sender.addyPos(-vVel);
-			vVel += 0.001;
+			sender.addyPos(vVel);
+			vVel -= 0.001;
 		} else if (this.jumping
-				&& ((sender.getyPos() - startYPos) < maxJumpHeight)) { // Jumping
+				&& (vVel >= 0)) { // Jumping
 			sender.addyPos(vVel);
 			vVel -= 0.001;
 		} else {
