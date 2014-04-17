@@ -1,13 +1,16 @@
+#contentDiv {
+	text-align: center;
+}
+
 #drawDiv {
-	float: left;
+	display: inline-block;
 	border: solid 1px;
 }
 
 #chatBox {
 	margin-left: 5px;
-	float: left;
+	display: inline-block;
 	border: solid 1px;
-	position: absolute;
 	left: 650px;
 }
 
@@ -19,16 +22,16 @@
 
 #chatHist {
 	width: 250px;
-	height: 480px;
+	height: 435px;
 	overflow: auto;
 }
 
 #overlayText {
-	position: absolute;
-	top: 15px;
-	left: 0px;
-	width: 640px;
-	height: 480px;
+	position: relative;
+	overflow: hidden;
+	z-index: 100;
+	top: -475px;
+	height: 0px;
 }
 
 .chatBubble {
