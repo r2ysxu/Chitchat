@@ -3,7 +3,6 @@ package com.chitchat.conn.model;
 import com.chitchat.conn.request.RequestQueue;
 
 public class MoveRequest extends Thread {
-	// private static Map<String, PlayerRequest> clients;
 	private static RequestQueue queue;
 	private PlayerRequest sender;
 	private boolean moving;
@@ -118,7 +117,6 @@ public class MoveRequest extends Thread {
 					handleMovement();
 				if (moving || jumping || !landed)
 					sendMovementResponse();
-
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
