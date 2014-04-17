@@ -11,7 +11,6 @@ public class PlayerRequest {
 	private double yPos;
 	private int index;
 	private MoveRequest moveRequest;
-	private ShootRequest shootRequest;
 
 	public PlayerRequest(Session session, RequestQueue queue, int index) {
 		this.session = session;

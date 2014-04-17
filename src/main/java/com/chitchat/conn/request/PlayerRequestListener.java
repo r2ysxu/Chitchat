@@ -11,7 +11,6 @@ import javax.websocket.Session;
 
 import com.chitchat.conn.model.MoveRequest;
 import com.chitchat.conn.model.PlayerRequest;
-import com.chitchat.conn.model.ShootRequest;
 
 /**
  * This Class Listens to requests
@@ -22,7 +21,6 @@ import com.chitchat.conn.model.ShootRequest;
 public class PlayerRequestListener {
 
 	private final Map<String, PlayerRequest> clients = new HashMap<String, PlayerRequest>();
-	private final Map<String, ShootRequest> shootRequests = new HashMap<String, ShootRequest>();
 
 	private boolean unusedplayerSlots[];
 
