@@ -57,8 +57,6 @@ function onError(event) {
 }
 
 function sendMsg() {
-	event = window.event;
-	if (event.keyCode == 13) {
 		var val = document.getElementById("chatTextField").value;
 		if (val != '') {
 			var request = '{ "type" : "chat", "message" : "' + val + '" }';
@@ -66,7 +64,6 @@ function sendMsg() {
 			document.getElementById("chatTextField").value = '';
 			document.getElementById('glcanvas').focus();
 		}
-	}
 }
 
 function connResponse(response) {
@@ -124,6 +121,7 @@ function handleKeyUp(event) {
 	keyUp = true;
 	if (currentlyPressedKeys[13]) { // Enter key
 		document.getElementById('chatTextField').focus();
+		sendMsg();
 	}
 	if (currentlyPressedKeys[33]) { // Page Up
 	}
@@ -163,7 +161,8 @@ function throwSnowball() {
 	if ((currentTime - lastShotTime) > 500) {
 		lastShotTime = currentTime;
 		// Shoot
-		var request = '{ "type" : "shoot" }';
+		var pos = players[playerIndex].leftright;
+		var request = '{ "type" : "shoot", "pos" : ' + pos + ' }';
 		websocket.send(request);
 	}
 }
